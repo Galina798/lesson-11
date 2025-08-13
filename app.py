@@ -8,6 +8,5 @@ if __name__ == "__main__":
 
     tk.Button(root, text = "Изучение полей ввода", command = study_entry).pack(pady=20)
 
-    
 
     root.mainloop()
