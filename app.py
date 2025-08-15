@@ -6,7 +6,6 @@ if __name__ == "__main__":
     root.title("Изучение элементов GUI")
     root.geometry("400x300")
 
-    tk.Button(root, text = "Изучение полей ввода", command = study_entry).pack(pady=20)
-
+    tk.Button(root, text="Изучение полей ввода", command=study_entry).pack(pady=20)
 
     root.mainloop()
