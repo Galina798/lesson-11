@@ -21,6 +21,7 @@ for r in range(4):
         )
 
 
+# палка - отбивалка
 def move_paddle(event):
     pos = canvas.coords(paddle)
     if event.keysym == "Left" and pos[0] > 0:
@@ -29,6 +30,49 @@ def move_paddle(event):
         canvas.move(paddle, 20, 0)
 
 
-root.bind("<Key>", move_paddle)
+# мячик
 
+dx, dy = -5, -5
+
+
+def game_loop():
+    global dx, dy
+    canvas.move(ball, dx, dy)
+    x1, y1, x2, y2 = canvas.coords(ball)
+
+    # Отскок от стен
+    if x1 <= 0 or x2 >= 400:
+        dx = -dx
+    if y1 <= 0:
+        dy = -dy
+
+    # Проигрыш при падении вниз
+    if y2 >= 300:
+        print("Проигрыш!")
+        return
+
+    # Отскок от платформы
+    px1, py1, px2, py2 = canvas.coords(paddle)
+    if y2 >= py1 and x2 >= px1 and x1 <= px2:
+        dy = -dy
+
+    root.after(40, game_loop)
+
+    # отскок от блоков
+    for block in blocks:
+        bx1, by1, bx2, by2 = canvas.coords(block)
+        if y1 <= by2 and y2 >= by1 and x2 >= bx1 and x1 <= bx2:
+            canvas.delete(block)
+            blocks.remove(block)
+            dy = -dy
+
+    if y2 >= 300:
+        canvas.create_text(
+            200, 150, text="Игра окончена", fill="white", font=("Arial", 20)
+        )
+        return
+
+
+root.bind("<Key>", move_paddle)
+game_loop()
 root.mainloop()
